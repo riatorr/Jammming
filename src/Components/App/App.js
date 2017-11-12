@@ -11,7 +11,9 @@ class App extends React.Component {
     this.state = {
       searchResults: [],
       playlistName: 'New Playlist',
-      playlistTracks: []
+      playlistTracks: [],
+      status: null,
+      shareURL: ''
     };
 
     this.addTrack = this.addTrack.bind(this);
@@ -19,6 +21,8 @@ class App extends React.Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.sharePlaylist = this.sharePlaylist.bind(this);
+    this.clearPlaylist = this.clearPlaylist.bind(this);
   }
 
   // Be sure to update by checking for track id!
@@ -47,13 +51,25 @@ class App extends React.Component {
   savePlaylist() {
     let trackURIs = this.state.playlistTracks.map(track => track.uri);
 
-    Spotify.savePlaylist(this.state.playlistName, trackURIs).then(playlistName => {
-      this.setState({
-        playlistName: 'New Playlist',
-        playlistTracks: []
-      });
-    })
-    // return trackURIs;
+    Spotify.savePlaylist(this.state.playlistName, trackURIs).then(status => {
+      this.setState({status: status});
+      return this.state.status;
+    });
+  }
+
+  sharePlaylist() {
+    let shareURL = Spotify.getShareURL();
+    this.setState({shareURL: shareURL});
+    return this.state.shareURL;
+  }
+
+  clearPlaylist() {
+    this.setState({
+      playlistName: 'New Playlist',
+      playlistTracks: [],
+      status: null,
+      shareURL: ''
+    });
   }
 
   search(term) {
@@ -71,7 +87,16 @@ class App extends React.Component {
           <SearchBar onSearch={this.search}/>
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
-            <PlayList playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} />
+            <PlayList
+            playlistName={this.state.playlistName}
+            playlistTracks={this.state.playlistTracks}
+            onRemove={this.removeTrack}
+            onNameChange={this.updatePlaylistName}
+            status={this.state.status}
+            shareURL={this.state.shareURL}
+            onSave={this.savePlaylist}
+            onShare={this.sharePlaylist}
+            onClear={this.clearPlaylist} />
           </div>
         </div>
       </div>

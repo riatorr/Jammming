@@ -1,6 +1,7 @@
 let accessToken;
 const clientId = 'b9c98afea6254905a7e6686297229e9b';
 const redirectURI = 'http://localhost:3000/';
+let shareURL = '';
 
 
 let Spotify = {
@@ -42,7 +43,6 @@ let Spotify = {
   },
 
   savePlaylist(playlistName, trackUris) {
-    console.log(trackUris);
     if(playlistName && trackUris.length > 0) {
       const accessToken = Spotify.getAccessToken();
       const headers = {
@@ -59,19 +59,28 @@ let Spotify = {
           method: 'POST',
           headers: headers,
           body: JSON.stringify( {name: playlistName} )
-        }).then(response => response.json()).then(jsonResponse => {
+        }).then(response => {
+          return response.json();
+        }).then(jsonResponse => {
           let playlistID = jsonResponse.id;
-          console.log(jsonResponse);
+          shareURL = `https://open.spotify.com/user/${userID}/playlist/${playlistID}`;
           return fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({ uris: trackUris })
-          });
+          }).then(response => {
+              return response.status;
+            }
+          );
         });
       });
     } else {
       return;
     }
+  },
+
+  getShareURL() {
+    return shareURL;
   }
 }
 

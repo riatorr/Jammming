@@ -37,6 +37,20 @@
   background-color: rgba(108, 65, 233, .7);
 }
 
+.Playlist-share {
+  margin-top: 30px;
+  width: 100%;
+  display: block;
+  word-wrap: break-word;
+
+}
+
+.Playlist-share-title {
+  margin-bottom: 15px;
+  font-size: 1.55rem;
+  text-align: center;
+}
+
 ::-webkit-scrollbar {
     width: 0px;
     background: transparent;
