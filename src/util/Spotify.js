@@ -1,6 +1,6 @@
 let accessToken;
 const clientId = 'dd35607eafb54fa6802d5fac3efc18c3';
-const redirectURI = 'https://jamming-react-mts.herokuapp.com/';
+const redirectURI = 'https://jamming-react-mts.herokuapp.com/callback/';
 // const redirectURI = 'http://localhost:3000/';
 let shareURL = '';
 
