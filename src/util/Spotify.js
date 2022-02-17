@@ -1,9 +1,8 @@
-let accessToken;
-const clientId = 'dd35607eafb54fa6802d5fac3efc18c3';
-const redirectURI = 'https://jamming-react-mts.herokuapp.com/callback/';
-// const redirectURI = 'http://localhost:3000/';
-let shareURL = '';
+require('dotenv').config();
 
+let accessToken;
+const redirectURI = 'https://jamming-react-mts.herokuapp.com/callback/';
+let shareURL = '';
 
 let Spotify = {
   getAccessToken() {
@@ -21,7 +20,7 @@ let Spotify = {
       window.history.pushState('Access Token', null, '/');
       return accessToken
     } else {
-      window.location = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
+      window.location = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_CLIENT_ID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
     }
   },
 
